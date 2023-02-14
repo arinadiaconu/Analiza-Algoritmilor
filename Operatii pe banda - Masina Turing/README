@@ -1,0 +1,127 @@
+DIACONU ARINA-IOANA				322 CB
+
+					README - tema 1 AA
+
+	Mentiune: am ridicat numarul de pasi din checker la 7100. Programele ruleaza fara sa 
+cicleze si ajung la rezultatul dorit, chiar daca nu am cea mai eficienta solutie.
+	Punctaj pe checker:	100p
+
+	Implementare
+
+		Task 1.1 - la stanga primului caracter de pe banda scrie @ si acesta va fi punctul de
+referinta pentru sfarsitul shiftarii. De fiecare data va merge la sfarsitul benzii, respectiv la
+ultimul caracter diferit de X sau de #, va scrie X si va merge la inceputul benzii pentru a 
+scrie caracterul copiat. Acest proces se va opri cand inainte de seria de X va gasi
+caracterul @, moment in care va scrie X si va sterge ultimul X (pe cel de la sfarsitul benzii).
+	Pasii principali de pe banda:	#100#
+									#@100#
+									#0@10X#
+									#00@1XX#
+									#100@XXX#
+									#100XXX#
+
+		Task 1.2 - compara cu 101 numarul de pe banda astfel: verifica prima cifra si o 
+verifica pe a doua tinand cont la trecerea in starea urmatoare ca prima cifra este 1 sau 0,
+stergand si cifrele in timp ce le parcurge. Daca a ajuns la a treia cifra, iar numarul este mai 
+mic ca 5, verifica daca se termina banda si scrie 0, iar altfel scrie 1 si sterge banda.
+	Pasii principali de pe banda: #100#					#101#
+								        ##00#					##01#
+									###0#				###1#
+									#####				#####
+									####0#				####1#
+
+		Task 1.3 - programul practic ia in calcul cele 4 cazuri in care se poate aduna 11 la 
+numarul de pe banda:
+		00+			01+			10+			11+
+		11				11				11				11
+		11			      100			      101			      110
+	Atfel, merge la sfarsitul benzii si daca prima cifra este 0, merge in starea care 
+verifica a doua cifra, scriind cifra corespunzatoare pe banda. Face la fel si pentru 1, 
+respectiv pentru a doua cifra. Dupa ce sunt schimbate ultimele doua cifre, in cazul in care
+mai trebuie scris acel 1 de la carry, se parcurge banda in continuare la stanga, iar daca este
+1, se schimba in 0, iar daca este gasit un 0 sau #, se schimba in 1 si de termina executia.
+	Pasii principali de pe banda: #10101#
+								        #10100#	
+									#10100#
+									#10000#
+									#11000#
+
+		Task 1.4 - se scrie la stanga benzii caracterul & si se shifteaza continutul benzii la
+dreapta scriind in locul numarului de pe banda caracterul X. Se parcurge, apoi, seria de X
+si se insereaza la fiecare 4 caractere cate un @. Daca ultimul grup nu este de 4 X, se
+insereaza caractere pana la al 4-lea. In acest moment banda va arata astfel:
+				#XXXX@XXXX@XXXX&100010001#
+	Dupa constructia acestui sablon, toate caracterele de X se vor schimba in 0. Se merge 
+la sfarsitul benzii pentru a verifica daca mai sunt cifre intre & si #. Pentru fiecare cifra, se
+shifteaza cu un caracter la stanga tot continutul benzii, insa caracterele @ si & raman pe
+loc. Dupa shiftare, se merge la fiecare set de 4 biti din sablon si se verifica daca numarul
+este sau nu mai mare ca 101. Daca este, se aduna 3 la acel numar, iar daca nu, se trece la
+urmatorul set. Procesul se repeta pana cand a fost shiftat tot numarul initial. In acest caz,
+se sterg de pe banda aracterele & si @ si se termina executia.
+	Pasii principali:	#100010001#
+						#XXXX@XXXX@XXXX&100010001#	- sablonul
+						#0000@0000@0000&100010001#
+						#0000@0000@0001&00010001#
+						#0000@0000@0010&0010001#
+						#0000@0000@0100&010001#
+						#0000@0000@1000&10001#
+						#0000@0000@1011&10001# - adauga 11(3)
+						#0000@0001@0111&0001#
+						#0000@0001@1010&0001# - adauga 11(3)
+						#0000@0011@0100&001#
+						#0000@0110@1000&01#
+						#0000@1001@1011&01# - adauga 11(3)
+						#0001@0011@0110&1#
+						#0001@0011@1001&1# - adauga 11(3)
+						#0010@0111@0011&#
+						#001001110011#
+
+		Task 2.1 - face exact ce face si algoritmul de la 1.1, doar ca invers. Scrie la sfarsitul
+benzii @ si pentru fiecare cifra, o copiaza si o scrie la sfarsitul benzii.
+	Pasii principali:	#0100#
+						#0100@#
+						#X100@0#
+						#XX00@01#
+						#XXX0@010#
+						#XXXX@0100#
+						#XXXX0100#
+
+		Task 2.2 - precum la task-ul 1.3, programul ia in calcul cele 4 cazuri in care se poate 
+scadea 11(3) din alt numar:
+		100-			101-			110-			11-
+		  11				   11			   11			11
+		001			 010			011			00
+	Merge la sfarsitul benzii, modifica primele 2 cifre  in functie de caz si daca este pe
+cazul in care s-a imprumutat un 1, se merge la stanga benzii, modificand 0 in 1 pana gaseste
+un 1 pe care il modifica in 0 si se termina executia.
+	Pasii principali:	#1000#
+						#1001#
+						#1001#
+						#1101#
+						#0101#
+
+		Task 2.3 - parcurge banda, iar la fiecare grup de 4 biti, insereaza un @. La sfarsit, 
+insereaza un &. Sablonul astfel construit arata ca mai jos:
+			#0010@0111@0011&#
+	Se shifteaza la dreapta tot continutul benzii, mai putin caracterele @ si &. Se parcurge
+fiecare set de 4 biti si daca numarul este mai mare ca 1000(8), adica daca primul bit este 1,
+se scade 11(3) din acel grup. De fiecare data dupa o shiftare se verifica ca primul grup sa nu
+fie nul, adica de forma 0000, iar daca este, se sterge acel grup. Shiftarea se opreste atunci
+cand nu mai este niciun set de 4 biti, se sterge caracterul & si se termina executia 
+programului.
+	Pasii principali:	#001001110011#
+						#0010@0111@0011&#
+						#0001@0011@1001&1#
+						#0001@0011@0110&1# - se scade 11(3)
+						#0000@1001@1011&01#
+						#0110@1000&01# - se sterge grupul de zerouri si se scade 11(3)
+						#0011@0100&001#
+						#0001@1010&0001#
+						#0001@0111&0001# - se scade 11(3)
+						#0000@1011&10001#
+						#1000&10001# - se sterge grupul de zerouri si se scade 11(3)
+						#0100&010001#
+						#0010&0010001#
+						#0001&00010001#
+						#0000&100010001#
+						#100010001#
